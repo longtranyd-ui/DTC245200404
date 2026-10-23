@@ -4,7 +4,7 @@ Python (Flask), PostgreSQL và pgAdmin; triển khai bằng Docker Compose trên
 
 ## Phạm vi hiện tại
 
-Mã nguồn có bốn nhóm chức năng: khách hàng, thú cưng, dịch vụ spa và lịch hẹn. Đã kiểm chứng truy cập các trang, kết nối DB và phản hồi pgAdmin. Chưa kiểm chứng thao tác ghi dữ liệu vì đang chờ dữ liệu được sinh viên cho phép. Không có dữ liệu mẫu trong mã nguồn.
+Mã nguồn có bốn nhóm chức năng: khách hàng, thú cưng, dịch vụ spa và lịch hẹn. Đã kiểm chứng truy cập các trang, kết nối DB và phản hồi pgAdmin. Đã thêm dữ liệu giả lập được sinh viên duyệt vào DB đang chạy, kiểm tra sửa lịch hẹn và xóa khách hàng thử qua Flask test client. Chưa kiểm chứng đăng nhập pgAdmin bằng giao diện. Không tự động nạp dữ liệu mẫu khi dựng mới.
 
 Nginx, giám sát và log riêng của đề 28 chưa được triển khai trong repository này.
 
@@ -33,4 +33,4 @@ curl http://localhost:8088/health
 
 ## Báo cáo
 
-Xem [khung báo cáo](docs/huong-dan-bao-cao.md) và [kết quả kiểm tra bước 2A](docs/02a-kiem-chung-ung-dung.md). Ảnh minh chứng do sinh viên tự chụp. Không công khai mật khẩu trong ảnh hoặc báo cáo.
+Xem [khung báo cáo](docs/huong-dan-bao-cao.md), [kết quả kiểm tra bước 2A](docs/02a-kiem-chung-ung-dung.md) và [kiểm thử dữ liệu bước 2B](docs/02b-du-lieu-va-kiem-thu.md). Ảnh minh chứng do sinh viên tự chụp. Không công khai mật khẩu trong ảnh hoặc báo cáo.

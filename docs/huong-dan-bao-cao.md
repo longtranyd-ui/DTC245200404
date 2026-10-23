@@ -1,10 +1,10 @@
 # Báo cáo thực hành — Đề 28: Quản lý Cửa hàng Thú cưng
 
-Tài liệu đang soạn. Các phần kết quả chỉ được hoàn thiện sau khi thực hành và kiểm chứng. Không coi kế hoạch dưới đây là kết quả đã đạt.
+Tài liệu đang soạn. Bắt đầu tại [Nhiệm vụ 1 — Chuẩn bị và tiêu chí](01-chuan-bi-va-tieu-chi.md), có kết quả kiểm tra ngày 23/10/2026 và nội dung viết báo cáo cho người mới. Các phần kết quả chỉ được hoàn thiện sau khi thực hành và kiểm chứng. Không coi kế hoạch dưới đây là kết quả đã đạt.
 
 ## Phạm vi
 
-Xây dựng website quản lý thú cưng, dịch vụ spa, khách hàng và lịch hẹn. Sử dụng PostgreSQL và pgAdmin; triển khai toàn bộ dịch vụ bằng Docker Compose. Ngôn ngữ ứng dụng chờ sinh viên lựa chọn giữa Node.js và Python theo gợi ý đề bài.
+Xây dựng website quản lý thú cưng, dịch vụ spa, khách hàng và lịch hẹn. Sử dụng PostgreSQL và pgAdmin; triển khai toàn bộ dịch vụ bằng Docker Compose. Mã nguồn hiện có sử dụng Python/Flask theo gợi ý đề bài.
 
 Không tự thêm dữ liệu nghiệp vụ mẫu. Sinh viên cung cấp hoặc duyệt dữ liệu trước khi nhập. Ảnh minh chứng do sinh viên tự chụp, không tạo ảnh minh chứng giả.
 
@@ -51,13 +51,13 @@ Mỗi nhiệm vụ hoàn tất phải có commit có ý nghĩa và push GitHub. 
 - Khi được mở đúng màn hình, tự chụp ảnh; chèn ảnh vào mục tương ứng và ghi chú ảnh.
 - Ghi mã commit sau khi push thành công.
 
-## Tình trạng ban đầu
+## Tình trạng cập nhật ngày 23/10/2026
 
 - Repository đích: https://github.com/longtranyd-ui/DTC245200404
-- Đã có README.md rỗng trong checkout cục bộ.
-- Chưa commit hoặc push thành công vì thiếu tên và email tác giả Git.
-- Chưa xác nhận môi trường Ubuntu để triển khai.
-- Chưa có dữ liệu nghiệp vụ được duyệt.
+- README.md rỗng đã được push lên main ở commit 7b742ba; sẽ bổ sung hướng dẫn chạy sau khi kiểm chứng.
+- Đã xác nhận Ubuntu WSL2, ba dịch vụ app/db/pgadmin đang chạy và ứng dụng kết nối PostgreSQL.
+- Sinh viên cho phép giữ nguyên và chỉ đọc bộ dữ liệu hiện có. Mỗi bảng nghiệp vụ hiện có một bản ghi.
+- Chưa xác nhận sinh viên đã chụp ảnh. Các tiêu chí còn lại được theo dõi trong tài liệu nhiệm vụ 1.
 
 ## Căn cứ
 

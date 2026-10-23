@@ -16,7 +16,7 @@
 
 Repository: https://github.com/longtranyd-ui/DTC245200404
 
-Mã nguồn hiện có dùng Python/Flask; không cần chọn lại ngôn ngữ. Hệ thống đang chạy trong Ubuntu WSL2 tại `~/de-tai-28`. Checkout Git dùng để chuẩn bị và push nằm trên Windows; thư mục chạy trong Ubuntu hiện không phải checkout Git. Không sao chép đè hoặc tạo lại cơ sở dữ liệu.
+Mã nguồn hiện có dùng Python/Flask. Theo yêu cầu sinh viên, mã nguồn, checkout Git, cấu hình và hướng dẫn báo cáo được tập trung tại `C:\DTC245200404`. Ubuntu WSL2 truy cập cùng thư mục qua `/mnt/c/DTC245200404`. Docker Compose chạy từ thư mục này và dùng lại volume PostgreSQL hiện có; không tạo lại cơ sở dữ liệu.
 
 Kết quả kiểm tra trực tiếp:
 
@@ -53,7 +53,7 @@ Tạo tài liệu báo cáo của bạn và đặt tên: **Báo cáo thực hàn
 
 **Mục Môi trường thực hành**, có thể viết:
 
-> Hệ thống được thực hành trên Windows với Ubuntu WSL2. Trong Ubuntu, thư mục triển khai là ~/de-tai-28. Ở bước kiểm tra ban đầu, Docker Compose có ba dịch vụ app, db và pgadmin. Hai dịch vụ app và db báo healthy. Endpoint /health cho biết ứng dụng kết nối cơ sở dữ liệu thành công. Truy vấn đếm ghi nhận mỗi bảng nghiệp vụ có một bản ghi; dữ liệu được giữ nguyên trong bước này.
+> Hệ thống được thực hành trên Windows với Ubuntu WSL2. Trong Ubuntu, thư mục triển khai là /mnt/c/DTC245200404. Ở bước kiểm tra ban đầu, Docker Compose có ba dịch vụ app, db và pgadmin. Hai dịch vụ app và db báo healthy. Endpoint /health cho biết ứng dụng kết nối cơ sở dữ liệu thành công. Truy vấn đếm ghi nhận mỗi bảng nghiệp vụ có một bản ghi; dữ liệu được giữ nguyên trong bước này.
 
 Không ghi các thành phần dự kiến như Nginx, Grafana hoặc Loki là đã hoàn thành.
 

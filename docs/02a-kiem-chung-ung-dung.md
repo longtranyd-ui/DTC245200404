@@ -2,7 +2,7 @@
 
 ## Mục đích
 
-Kiểm tra ba dịch vụ đề 28 hiện có trong `/home/longtranyd/de-tai-28` trên Ubuntu WSL2. Không thay đổi dữ liệu và không ảnh hưởng stack Lab 7–8.
+Kiểm tra ba dịch vụ đề 28 hiện có trong `/mnt/c/DTC245200404` trên Ubuntu WSL2. Không thay đổi dữ liệu và không ảnh hưởng stack Lab 7–8.
 
 ## Kết quả đã kiểm chứng
 
@@ -20,7 +20,7 @@ Các kết quả trên chưa chứng minh thêm/sửa/xóa hoạt động hoặc
 Trong terminal Ubuntu:
 
 ```bash
-cd ~/de-tai-28
+cd /mnt/c/DTC245200404
 docker compose ps
 curl http://localhost:8088/health
 ```

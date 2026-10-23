@@ -5,3 +5,6 @@ __pycache__/
 *.backup
 pgadmin-data/
 postgres-data/
+
+# Tai lieu trich xuat va tep tam cuc bo
+tmp/

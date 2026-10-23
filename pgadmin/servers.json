@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "De 28 - PostgreSQL",
+      "Group": "DTC245200404",
+      "Host": "db",
+      "Port": 5432,
+      "MaintenanceDB": "petshop",
+      "Username": "dtc245200404",
+      "SSLMode": "prefer"
+    }
+  }
+}

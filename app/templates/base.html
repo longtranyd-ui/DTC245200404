@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ title }} · Quản lý cửa hàng thú cưng</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">28</span><span>Cửa hàng thú cưng<small>QUẢN LÝ DỊCH VỤ SPA</small></span></a>
+    <p class="nav-label">KHÔNG GIAN LÀM VIỆC</p>
+    <nav aria-label="Điều hướng chính">
+      <a class="{{ 'active' if active == 'home' else '' }}" href="{{ url_for('home') }}">Tổng quan</a>
+      {% for key, item in entities.items() %}<a class="{{ 'active' if active == key else '' }}" href="{{ url_for('listing', slug=key) }}">{{ item.title }}</a>{% endfor %}
+    </nav>
+    <div class="sidebar-note">ĐỀ TÀI THỰC HÀNH 28<br><strong>DTC245200404</strong></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><span>Hệ thống quản lý cửa hàng</span><span class="student">DTC245200404</span></header>
+    <main>
+      {% with messages = get_flashed_messages(with_categories=true) %}{% for category, message in messages %}<div class="notice {{ category }}" role="status">{{ message }}</div>{% endfor %}{% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+    <footer>Đề 28 · Python và PostgreSQL · Giờ lịch hẹn: UTC+7</footer>
+  </div>
+</body></html>

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="eyebrow">TỔNG QUAN</div>
+<h1>Quản lý cửa hàng, từng bước rõ ràng.</h1>
+<p class="intro">Theo dõi khách hàng, thú cưng, dịch vụ spa và lịch hẹn trong cùng một nơi.</p>
+<section class="cards" aria-label="Số lượng bản ghi">
+{% for slug, item in entities.items() %}<a class="stat-card" href="{{ url_for('listing', slug=slug) }}"><span>{{ item.title }}</span><strong>{{ counts[slug] }}</strong><small>Xem danh sách →</small></a>{% endfor %}
+</section>
+<section class="welcome-panel"><div><span class="eyebrow">BẮT ĐẦU LÀM VIỆC</span><h2>Nhập thông tin theo đúng thứ tự.</h2><p>Thêm khách hàng, sau đó thêm thú cưng và dịch vụ spa. Khi đã có đủ thông tin, bạn có thể tạo lịch hẹn.</p><a class="button" href="{{ url_for('edit', slug='khach-hang') }}">Thêm khách hàng</a></div><ol><li>Khách hàng<small>Họ tên và số điện thoại</small></li><li>Thú cưng & dịch vụ<small>Liên kết chủ sở hữu và khai báo dịch vụ</small></li><li>Lịch hẹn<small>Chọn thú cưng, dịch vụ, ngày giờ và trạng thái</small></li></ol></section>
+<p class="quiet">Các số liệu hiển thị được đọc trực tiếp từ cơ sở dữ liệu.</p>
+{% endblock %}

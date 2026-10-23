@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<a class="back-link" href="{{ url_for('listing', slug=slug) }}">← Quay lại {{ entity.title|lower }}</a><h1>{{ title|capitalize }}</h1><p class="intro">Điền thông tin và chọn lưu để cập nhật danh sách.</p>
+{% if errors %}<div class="notice error" role="alert"><strong>Vui lòng kiểm tra lại thông tin.</strong><ul>{% for error in errors %}<li>{{ error }}</li>{% endfor %}</ul></div>{% endif %}
+<section class="form-panel"><form method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+{% for name, label, kind, limit in entity.fields %}<div class="field"><label for="{{ name }}">{{ label }} <span aria-hidden="true">*</span></label>
+{% if kind in ['customer','pet','service','status'] %}<select name="{{ name }}" id="{{ name }}" required><option value="">Chọn {{ label|lower }}</option>{% for value, text in choices[kind] %}<option value="{{ value }}" {{ 'selected' if row.get(name,'')|string == value|string else '' }}>{{ text }}</option>{% endfor %}</select>{% if not choices[kind] %}<p class="field-help">Chưa có lựa chọn. Hãy thêm {{ 'khách hàng' if kind == 'customer' else 'thú cưng' if kind == 'pet' else 'dịch vụ' }} trước.</p>{% endif %}
+{% else %}<input name="{{ name }}" id="{{ name }}" type="{{ 'number' if kind in ['money','integer'] else 'datetime-local' if kind == 'datetime' else 'text' }}" value="{{ row.get(name,'') }}" required {% if limit %}maxlength="{{ limit }}"{% endif %} {% if kind == 'money' %}min="0" max="9999999999.99" step="0.01"{% elif kind == 'integer' %}min="1" max="2147483647" step="1"{% endif %}>{% endif %}</div>{% endfor %}
+<div class="form-actions"><button class="button" type="submit">Lưu thông tin</button><a class="secondary-button" href="{{ url_for('listing', slug=slug) }}">Hủy</a></div></form></section>
+{% endblock %}

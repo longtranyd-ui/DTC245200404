@@ -1,0 +1,77 @@
+name: dtc245200404-de28
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?Can POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER:?Can POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Can mat khau PostgreSQL}
+      APP_DB_USER: ${APP_DB_USER:?Can APP_DB_USER}
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD:?Can mat khau ung dung}
+      TZ: Asia/Bangkok
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./database:/docker-entrypoint-initdb.d:ro
+    networks: [db_net]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: '3'}
+  app:
+    build: ./app
+    image: dtc245200404-de28-app:local
+    restart: unless-stopped
+    depends_on:
+      db: {condition: service_healthy}
+    ports: ['127.0.0.1:8088:8000']
+    environment:
+      DB_HOST: db
+      DB_NAME: ${POSTGRES_DB}
+      DB_USER: ${APP_DB_USER}
+      DB_PASSWORD: ${APP_DB_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY:?Can khoa phien}
+      TZ: Asia/Bangkok
+    networks: [web_net, db_net]
+    user: '10001:10001'
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: ['no-new-privileges:true']
+    healthcheck:
+      test: [CMD, python, -c, 'import urllib.request; urllib.request.urlopen("http://127.0.0.1:8000/health", timeout=3)']
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: '3'}
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: unless-stopped
+    depends_on:
+      db: {condition: service_healthy}
+    ports: ['127.0.0.1:8089:5050']
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:?Can mat khau pgAdmin}
+      PGADMIN_LISTEN_PORT: 5050
+      PGADMIN_CONFIG_SERVER_MODE: 'True'
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+      - ./pgadmin/servers.json:/pgadmin4/servers.json:ro
+    networks: [admin_net, db_net]
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: '3'}
+networks:
+  web_net: {}
+  admin_net: {}
+  db_net: {internal: true}
+volumes:
+  postgres-data: {}
+  pgadmin-data: {}

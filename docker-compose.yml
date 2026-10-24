@@ -38,7 +38,7 @@ services:
     networks: [web_net, db_net]
     user: '10001:10001'
     read_only: true
-    tmpfs: [/tmp]
+    tmpfs: ['/tmp:rw,noexec,nosuid,size=16m,mode=1777']
     cap_drop: [ALL]
     security_opt: ['no-new-privileges:true']
     healthcheck:
@@ -88,6 +88,8 @@ services:
   prometheus:
     image: prom/prometheus:latest
     restart: unless-stopped
+    security_opt: ['no-new-privileges:true']
+    cap_drop: [ALL]
     command: ['--config.file=/etc/prometheus/prometheus.yml', '--storage.tsdb.path=/prometheus', '--storage.tsdb.retention.time=7d']
     ports: ['127.0.0.1:9091:9090']
     volumes:
@@ -97,6 +99,8 @@ services:
   grafana:
     image: grafana/grafana:latest
     restart: unless-stopped
+    security_opt: ['no-new-privileges:true']
+    cap_drop: [ALL]
     ports: ['127.0.0.1:3001:3000']
     environment:
       GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:?Can tai khoan Grafana}
@@ -122,6 +126,8 @@ services:
   nginx-exporter:
     image: nginx/nginx-prometheus-exporter:latest
     restart: unless-stopped
+    security_opt: ['no-new-privileges:true']
+    cap_drop: [ALL]
     command: ['--nginx.scrape-uri=http://nginx:8081/stub_status']
     networks: [web_net, monitor_net]
     depends_on:
@@ -129,6 +135,8 @@ services:
   postgres-exporter:
     image: prometheuscommunity/postgres-exporter:latest
     restart: unless-stopped
+    security_opt: ['no-new-privileges:true']
+    cap_drop: [ALL]
     environment:
       DATA_SOURCE_URI: 'db:5432/${POSTGRES_DB}?sslmode=disable'
       DATA_SOURCE_USER: ${MONITOR_DB_USER:?Can tai khoan giam sat DB}
@@ -139,6 +147,8 @@ services:
   loki:
     image: grafana/loki:latest
     restart: unless-stopped
+    security_opt: ['no-new-privileges:true']
+    cap_drop: [ALL]
     command: ['-config.file=/etc/loki/config.yml']
     ports: ['127.0.0.1:3101:3100']
     volumes:
@@ -151,6 +161,8 @@ services:
   promtail:
     image: grafana/promtail:latest
     restart: unless-stopped
+    security_opt: ['no-new-privileges:true']
+    cap_drop: [ALL]
     command: ['-config.file=/etc/promtail/config.yml']
     volumes:
       - ./logging/promtail.yml:/etc/promtail/config.yml:ro

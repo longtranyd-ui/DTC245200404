@@ -50,6 +50,7 @@ Hướng dẫn các phần đã triển khai:
 - [Nginx Reverse Proxy và security headers](04-nginx-reverse-proxy.md).
 - [Prometheus, Grafana và minh chứng giám sát container/web/DB](05-prometheus-grafana.md).
 - [Loki, Promtail và ba truy vấn LogQL](06-loki-promtail.md).
+- [Hardening và các bước kiểm chứng chỉ đọc](07-hardening.md).
 
 - Ghi mục đích của bước thực hành.
 - Ghi file cấu hình, lệnh đã thực hiện và giải thích ngắn gọn.

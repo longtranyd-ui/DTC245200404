@@ -45,6 +45,11 @@ Mỗi nhiệm vụ hoàn tất phải có commit có ý nghĩa và push GitHub. 
 
 ## Quy trình ghi báo cáo ở mỗi nhiệm vụ
 
+Hướng dẫn các phần đã triển khai:
+
+- [Nginx Reverse Proxy và security headers](04-nginx-reverse-proxy.md).
+- [Prometheus, Grafana và minh chứng giám sát container/web/DB](05-prometheus-grafana.md).
+
 - Ghi mục đích của bước thực hành.
 - Ghi file cấu hình, lệnh đã thực hiện và giải thích ngắn gọn.
 - Ghi cách kiểm tra, kết quả quan sát thật và lỗi đã xử lý nếu có.

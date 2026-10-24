@@ -136,6 +136,31 @@ services:
     networks: [db_net, monitor_net]
     depends_on:
       db: {condition: service_healthy}
+  loki:
+    image: grafana/loki:latest
+    restart: unless-stopped
+    command: ['-config.file=/etc/loki/config.yml']
+    ports: ['127.0.0.1:3101:3100']
+    volumes:
+      - ./logging/loki.yml:/etc/loki/config.yml:ro
+      - loki-data:/loki
+    networks: [monitor_net]
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: '3'}
+  promtail:
+    image: grafana/promtail:latest
+    restart: unless-stopped
+    command: ['-config.file=/etc/promtail/config.yml']
+    volumes:
+      - ./logging/promtail.yml:/etc/promtail/config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - promtail-positions:/positions
+    networks: [monitor_net]
+    depends_on: [loki]
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: '3'}
 networks:
   web_net: {}
   admin_net: {}
@@ -146,3 +171,5 @@ volumes:
   pgadmin-data: {}
   prometheus-data: {}
   grafana-data: {}
+  loki-data: {}
+  promtail-positions: {}

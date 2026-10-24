@@ -34,6 +34,10 @@ services:
       DB_USER: ${APP_DB_USER}
       DB_PASSWORD: ${APP_DB_PASSWORD}
       SECRET_KEY: ${SECRET_KEY:?Can khoa phien}
+      WEB_ADMIN_USER: ${WEB_ADMIN_USER:?Can tai khoan quan tri web}
+      WEB_ADMIN_PASSWORD_HASH: ${WEB_ADMIN_PASSWORD_HASH:?Can hash mat khau quan tri web}
+      WEB_STAFF_USER: ${WEB_STAFF_USER:?Can tai khoan nhan vien web}
+      WEB_STAFF_PASSWORD_HASH: ${WEB_STAFF_PASSWORD_HASH:?Can hash mat khau nhan vien web}
       TZ: Asia/Bangkok
     networks: [web_net, db_net]
     user: '10001:10001'

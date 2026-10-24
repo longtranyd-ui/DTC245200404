@@ -9,14 +9,14 @@
   <aside class="sidebar">
     <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">28</span><span>Cửa hàng thú cưng<small>QUẢN LÝ DỊCH VỤ SPA</small></span></a>
     <p class="nav-label">KHÔNG GIAN LÀM VIỆC</p>
-    <nav aria-label="Điều hướng chính">
+    {% if g.username %}<nav aria-label="Điều hướng chính">
       <a class="{{ 'active' if active == 'home' else '' }}" href="{{ url_for('home') }}">Tổng quan</a>
       {% for key, item in entities.items() %}<a class="{{ 'active' if active == key else '' }}" href="{{ url_for('listing', slug=key) }}">{{ item.title }}</a>{% endfor %}
-    </nav>
+    </nav>{% endif %}
     <div class="sidebar-note">ĐỀ TÀI THỰC HÀNH 28<br><strong>DTC245200404</strong></div>
   </aside>
   <div class="workspace">
-    <header class="topbar"><span>Hệ thống quản lý cửa hàng</span><span class="student">DTC245200404</span></header>
+    <header class="topbar"><span>Hệ thống quản lý cửa hàng</span>{% if g.username %}<div class="account-bar"><span class="student">{{ g.username }} · {{ 'Quản trị viên' if g.role == 'admin' else 'Nhân viên' }}</span><form method="post" action="{{ url_for('logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="secondary-button logout-button" type="submit">Đăng xuất</button></form></div>{% else %}<span class="student">DTC245200404</span>{% endif %}</header>
     <main>
       {% with messages = get_flashed_messages(with_categories=true) %}{% for category, message in messages %}<div class="notice {{ category }}" role="status">{{ message }}</div>{% endfor %}{% endwith %}
       {% block content %}{% endblock %}

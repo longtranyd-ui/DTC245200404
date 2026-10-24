@@ -1,4 +1,5 @@
 .env
+.web-credentials
 __pycache__/
 *.pyc
 *.dump

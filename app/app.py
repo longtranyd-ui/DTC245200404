@@ -3,18 +3,26 @@ import hmac
 import logging
 import os
 import secrets
-from datetime import datetime
+from datetime import datetime, timedelta
 from decimal import Decimal, InvalidOperation
 from zoneinfo import ZoneInfo
 
 import psycopg
 from psycopg import sql
 from psycopg.rows import dict_row
-from flask import Flask, abort, flash, redirect, render_template, request, session, url_for
+from flask import Flask, abort, flash, g, redirect, render_template, request, session, url_for
+from werkzeug.security import check_password_hash
 
 app = Flask(__name__)
 app.config.update(SECRET_KEY=os.environ['SECRET_KEY'], MAX_CONTENT_LENGTH=64 * 1024,
-                  SESSION_COOKIE_HTTPONLY=True, SESSION_COOKIE_SAMESITE='Lax')
+                  SESSION_COOKIE_HTTPONLY=True, SESSION_COOKIE_SAMESITE='Lax',
+                  PERMANENT_SESSION_LIFETIME=timedelta(minutes=30))
+USERS = {
+    os.environ['WEB_ADMIN_USER']: {'role': 'admin', 'password_hash': os.environ['WEB_ADMIN_PASSWORD_HASH']},
+    os.environ['WEB_STAFF_USER']: {'role': 'staff', 'password_hash': os.environ['WEB_STAFF_PASSWORD_HASH']},
+}
+if len(USERS) != 2 or not all(u['password_hash'] for u in USERS.values()):
+    raise ValueError('Can hai tai khoan web rieng biet va password hash khong rong.')
 logging.basicConfig(level=logging.INFO, format='%(levelname)s %(message)s')
 TZ = ZoneInfo('Asia/Bangkok')
 STATUSES = {'scheduled': 'Đã đặt', 'completed': 'Hoàn thành', 'cancelled': 'Đã hủy'}
@@ -55,6 +63,24 @@ app.jinja_env.globals.update(csrf_token=csrf_token, entities=ENTITIES)
 
 
 @app.before_request
+def authorize():
+    username = session.get('username')
+    user = USERS.get(username)
+    g.username = username if user else None
+    g.role = user['role'] if user else None
+    if request.endpoint in {'static', 'health', 'login'}:
+        return
+    if request.endpoint in {'listing', 'edit', 'delete'} and request.view_args.get('slug') not in ENTITIES:
+        abort(404)
+    if not user:
+        if request.method in {'GET', 'HEAD'}:
+            return redirect(url_for('login'))
+        abort(401, description='Bạn cần đăng nhập trước khi thực hiện thao tác.')
+    if request.endpoint == 'delete' and g.role != 'admin':
+        abort(403, description='Chỉ quản trị viên được phép xóa dữ liệu.')
+
+
+@app.before_request
 def protect_post():
     if request.method == 'POST':
         expected = session.get('csrf_token', '')
@@ -65,6 +91,8 @@ def protect_post():
 
 @app.after_request
 def headers(response):
+    if request.endpoint != 'static':
+        response.headers['Cache-Control'] = 'no-store'
     response.headers['X-Content-Type-Options'] = 'nosniff'
     response.headers['X-Frame-Options'] = 'DENY'
     response.headers['Referrer-Policy'] = 'same-origin'
@@ -147,6 +175,34 @@ def home():
     return render_template('home.html', counts=counts, active='home', title='Tổng quan')
 
 
+@app.route('/dang-nhap', methods=['GET', 'POST'])
+def login():
+    if g.username:
+        return redirect(url_for('home'))
+    error = None
+    if request.method == 'POST':
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '')
+        user = USERS.get(username)
+        candidate = user or next(iter(USERS.values()))
+        valid = check_password_hash(candidate['password_hash'], password)
+        if user and valid:
+            session.clear()
+            session.permanent = True
+            session['username'] = username
+            app.logger.info('AUTH_LOGIN role=%s', user['role'])
+            return redirect(url_for('home'))
+        error = 'Tên đăng nhập hoặc mật khẩu không đúng.'
+        app.logger.info('AUTH_LOGIN_FAILED')
+    return render_template('login.html', title='Đăng nhập', error=error), 401 if error else 200
+
+
+@app.post('/dang-xuat')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
+
+
 @app.get('/health')
 def health():
     with connect() as conn:
@@ -224,6 +280,8 @@ def unavailable(error):
 
 
 @app.errorhandler(400)
+@app.errorhandler(401)
+@app.errorhandler(403)
 @app.errorhandler(404)
 @app.errorhandler(413)
 def request_error(error):

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="login-wrap">
+<div class="eyebrow">CỬA HÀNG THÚ CƯNG</div>
+<h1>Đăng nhập</h1>
+<p class="intro">Sử dụng tài khoản được cấp để truy cập hệ thống.</p>
+{% if error %}<div class="notice error" role="alert">{{ error }}</div>{% endif %}
+<section class="form-panel"><form method="post" action="{{ url_for('login') }}">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<div class="field"><label for="username">Tên đăng nhập</label><input id="username" name="username" required maxlength="80" autocomplete="username"></div>
+<div class="field"><label for="password">Mật khẩu</label><input id="password" name="password" type="password" required autocomplete="current-password"></div>
+<button class="button" type="submit">Đăng nhập</button>
+</form></section>
+</div>
+{% endblock %}

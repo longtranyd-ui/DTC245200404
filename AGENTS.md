@@ -1,5 +1,7 @@
 # Quy tắc làm việc Đề 28
 
+- Sinh viên đã yêu cầu bổ sung đăng nhập và phân vai quản trị/nhân viên cho website. Tài khoản kỹ thuật được tạo cục bộ; không thay đổi bốn bảng nghiệp vụ để kiểm thử quyền.
+
 - Thư mục làm việc duy nhất: `C:\DTC245200404`, tương ứng `/mnt/c/DTC245200404` trong Ubuntu WSL2. Chỉnh sửa, Git và Docker Compose đều thực hiện từ đây; giữ nguyên Docker volumes hiện có.
 
 - Làm theo yêu cầu trực tiếp của người dùng trong chat; ghi lại các thay đổi phạm vi được người dùng chấp thuận.

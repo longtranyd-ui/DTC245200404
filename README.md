@@ -52,6 +52,8 @@ curl http://localhost:8088/health
 
 `config --quiet` không in nội dung cấu hình chứa mật khẩu. Nếu chưa có image hoặc chưa cấu hình môi trường, thực hiện mục 3 trước. Việc khởi động lại giữ nguyên dữ liệu trong các named volume.
 
+Nếu cập nhật từ bản chưa có đăng nhập website, chạy `python3 scripts/setup-web-auth.py` một lần trước lệnh Compose, sau đó build/recreate app và reload Nginx theo [hướng dẫn phân quyền](docs/09-phan-quyen-website.md). Không ghi đè `.env` đang dùng.
+
 ## 3. Cài đặt lần đầu trên môi trường mới
 
 Không thực hiện lại bước tạo bí mật trên máy đang có dữ liệu. Thay mật khẩu trong `.env` không tự đổi mật khẩu đã lưu trong volume PostgreSQL, pgAdmin hoặc Grafana.
@@ -95,7 +97,13 @@ Giữ tên DB/user mặc định trong `.env.example` để khớp cấu hình p
 | `MONITOR_DB_USER`, `MONITOR_DB_PASSWORD` | Tài khoản đọc thống kê cho PostgreSQL exporter |
 | `GRAFANA_ADMIN_USER`, `GRAFANA_ADMIN_PASSWORD` | Đăng nhập Grafana |
 
-### 3.2. Tải image và build ứng dụng
+### 3.2. Tạo tài khoản web, tải image và build ứng dụng
+
+```bash
+python3 scripts/setup-web-auth.py
+```
+
+Script tạo hai tài khoản web quản trị/nhân viên với mật khẩu ngẫu nhiên, ghi password hash vào `.env` và thông tin đăng nhập vào `.web-credentials` cục bộ. Hai file đều bị Git bỏ qua. Chạy lại khi đã cấu hình sẽ giữ nguyên tài khoản; không tự đặt lại mật khẩu. Không chụp hoặc commit `.web-credentials`.
 
 ```bash
 docker compose config --quiet
@@ -127,7 +135,8 @@ Chờ khoảng một phút để Prometheus có ít nhất hai lần scrape và 
 
 | Thành phần | Địa chỉ | Thông tin |
 |---|---|---|
-| Website qua Nginx | http://localhost:8088 | Bốn nhóm chức năng, không có trang đăng nhập riêng |
+| Website qua Nginx | http://localhost:8088 | Yêu cầu đăng nhập web trước khi xem bốn nhóm chức năng |
+| Đăng nhập website | http://localhost:8088/dang-nhap | Tài khoản trong `.web-credentials` cục bộ, khác pgAdmin/Grafana |
 | Kiểm tra kết nối DB | http://localhost:8088/health | Mong đợi database=connected, status=ok |
 | pgAdmin | http://localhost:8089 | Email/mật khẩu từ `PGADMIN_DEFAULT_*` |
 | Prometheus Targets | http://localhost:9091/targets | Bốn job UP |
@@ -236,6 +245,7 @@ docker-compose.yml   Khai bao toan bo dich vu
 - [Loki, Promtail và LogQL](docs/06-loki-promtail.md).
 - [Hardening](docs/07-hardening.md).
 - [Biên bản rà soát trước khi bổ sung README](docs/08-doi-chieu-tieu-chi.md).
+- [Đăng nhập và phân quyền quản trị/nhân viên](docs/09-phan-quyen-website.md).
 
 Các mốc kỹ thuật đã push: Nginx `b8b41dd`, giám sát `00d2d32`, log `e01441b`, hardening `0a50647`. README được bổ sung sau biên bản rà soát; nhận xét README rỗng trong tài liệu cũ mô tả trạng thái tại thời điểm đó.
 

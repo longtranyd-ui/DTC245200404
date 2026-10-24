@@ -246,6 +246,7 @@ docker-compose.yml   Khai bao toan bo dich vu
 - [Hardening](docs/07-hardening.md).
 - [Biên bản rà soát trước khi bổ sung README](docs/08-doi-chieu-tieu-chi.md).
 - [Đăng nhập và phân quyền quản trị/nhân viên](docs/09-phan-quyen-website.md).
+- [Sơ đồ kiến trúc tổng thể để chèn báo cáo](docs/10-kien-truc-tong-the.md).
 
 Các mốc kỹ thuật đã push: Nginx `b8b41dd`, giám sát `00d2d32`, log `e01441b`, hardening `0a50647`. README được bổ sung sau biên bản rà soát; nhận xét README rỗng trong tài liệu cũ mô tả trạng thái tại thời điểm đó.
 

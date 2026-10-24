@@ -1,0 +1,31 @@
+flowchart TB
+    browser["Trình duyệt trên máy thực hành"]
+    subgraph host["Windows + Ubuntu WSL2 • Docker Compose: dtc245200404-de28"]
+        nginx["Nginx reverse proxy<br/>127.0.0.1:8088 → 8080<br/>Security headers; HTTP"]
+        app["Flask / Gunicorn :8000<br/>Đăng nhập: quản trị / nhân viên<br/>Khách hàng • Thú cưng • Spa • Lịch hẹn"]
+        db[("PostgreSQL :5432<br/>petshop • 4 bảng nghiệp vụ")]
+        pgadmin["pgAdmin<br/>127.0.0.1:8089 → 5050"]
+        cadvisor["cAdvisor :8080<br/>CPU/RAM container"]
+        ne["Nginx exporter :9113"]
+        pe["PostgreSQL exporter :9187<br/>Role pg_monitor"]
+        prom["Prometheus<br/>127.0.0.1:9091 → 9090<br/>Scrape mỗi 15 giây"]
+        grafana["Grafana<br/>127.0.0.1:3001 → 3000<br/>Dashboard + Explore"]
+        logs["stdout/stderr container đề 28<br/>Docker socket; lọc project"]
+        promtail["Promtail<br/>Nhãn project / service / container"]
+        loki["Loki<br/>127.0.0.1:3101 → 3100<br/>Lưu log tập trung"]
+        nginx -->|"HTTP / reverse proxy"| app
+        app -->|"SQL • tài khoản CRUD"| db
+        pgadmin -->|"Quản trị DB"| db
+        nginx -->|"stub_status :8081 nội bộ"| ne
+        db -->|"Thống kê DB"| pe
+        cadvisor -->|"metrics được Prometheus kéo"| prom
+        ne -->|"metrics"| prom
+        pe -->|"metrics"| prom
+        prom -->|"Số liệu qua PromQL"| grafana
+        logs --> promtail -->|"Push log"| loki
+        loki -->|"Log qua LogQL"| grafana
+    end
+    browser -->|"Website :8088"| nginx
+    browser -->|"DB tool :8089"| pgadmin
+    browser -->|"Theo dõi :3001"| grafana
+    browser -->|"Targets :9091"| prom

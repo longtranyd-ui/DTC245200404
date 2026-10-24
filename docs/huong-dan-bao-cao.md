@@ -52,6 +52,7 @@ Hướng dẫn các phần đã triển khai:
 - [Loki, Promtail và ba truy vấn LogQL](06-loki-promtail.md).
 - [Hardening và các bước kiểm chứng chỉ đọc](07-hardening.md).
 - [Đăng nhập và phân quyền website theo yêu cầu bổ sung](09-phan-quyen-website.md).
+- [Sơ đồ kiến trúc tổng thể và đoạn giải thích](10-kien-truc-tong-the.md).
 
 - Ghi mục đích của bước thực hành.
 - Ghi file cấu hình, lệnh đã thực hiện và giải thích ngắn gọn.

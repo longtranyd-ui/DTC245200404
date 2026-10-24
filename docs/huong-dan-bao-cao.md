@@ -53,6 +53,7 @@ Hướng dẫn các phần đã triển khai:
 - [Hardening và các bước kiểm chứng chỉ đọc](07-hardening.md).
 - [Đăng nhập và phân quyền website theo yêu cầu bổ sung](09-phan-quyen-website.md).
 - [Sơ đồ kiến trúc tổng thể và đoạn giải thích](10-kien-truc-tong-the.md).
+- [Môi trường hệ thống và phiên bản thực tế](11-moi-truong-he-thong.md).
 
 - Ghi mục đích của bước thực hành.
 - Ghi file cấu hình, lệnh đã thực hiện và giải thích ngắn gọn.
